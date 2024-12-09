@@ -1,24 +1,74 @@
-# Compiled class file
-*.class
+import javax.swing.*;
+import java.awt.event.*;
 
-# Log file
-*.log
-
-# BlueJ files
-*.ctxt
-
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-
-# Package Files #
-*.jar
-*.war
-*.nar
-*.ear
-*.zip
-*.tar.gz
-*.rar
-
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
-replay_pid*
+public class DikkatOyunu extends JFrame implements MouseListener {
+	private JButton button;
+	private long baslamaZaman;
+	private boolean tiklamaDurum = false;
+	private int fareTiklama = 0;
+	private int hiz = 500;
+	
+	public DikkatOyunu() {
+		setTitle("Dikkat Oyunu");
+		setSize(400,300);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setLayout(null);
+		
+		
+		button = new JButton("Beni Yakala!");
+		button.setBounds(150,100,150,50);//Düğmenin başlangıç konumu ve boyutunu belirler
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(baslamaZaman ==0) {
+					baslamaZaman = System.currentTimeMillis();//başlama zamanı al.
+				}else {
+					long bitisZaman = System.currentTimeMillis();
+					long gecenSure = (bitisZaman - baslamaZaman);
+					JOptionPane.showMessageDialog(null, "Geçen süre: "+gecenSure+" Milisaniye, tıklama sayısı: "+fareTiklama);
+					int puan = (int)((100000/gecenSure)*fareTiklama);
+					JOptionPane.showMessageDialog(null, "Puan: "+puan);
+					baslamaZaman = 0;// başlangıcı sıfırla
+					tiklamaDurum = true;
+				}					
+			}
+		});
+		add(button);
+		this.addMouseListener(this);
+		Thread thread = new Thread(new Runnable() {
+			public void run() {
+				while (!tiklamaDurum) {
+					int x = (int) (Math.random()*(getWidth()-button.getWidth()));
+					int y = (int) (Math.random()*(getHeight()-button.getHeight()));
+					button.setLocation(x,y);
+					try {
+						Thread.sleep(hiz);//her hız milisaniyede bir hareket et
+					}catch (InterruptedException ex) {
+						ex.printStackTrace();
+					}
+				}
+			}
+		});
+		thread.start();
+	}
+	public static void main(String[] args) {
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				DikkatOyunu frameDikkatOyunu = new DikkatOyunu();
+				frameDikkatOyunu.setVisible(true);
+			}
+		});
+	}
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		fareTiklama++;
+		System.out.println("Fare tıklandı");
+	}
+	@Override
+	public void mousePressed(MouseEvent e) {
+		
+	}
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		
+	}
+}
