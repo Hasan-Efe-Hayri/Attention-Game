@@ -30,8 +30,5 @@ Projeye katkıda bulunmak isterseniz, aşağıdaki adımları takip edebilirsini
 3. Yaptığınız değişiklikleri dalınıza yükleyin (`git push origin özellik/benim-özelliğim`).
 4. Pull request açın.
 
-## Lisans
-Bu proje [Proje Lisansı] kapsamında lisanslanmıştır.
-
 ## İletişim
 Bu projeyle ilgili sorularınız için Hasan Efe Hayri ile iletişime geçebilirsiniz: efehayri2005@gmail.com
